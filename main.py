@@ -1,3 +1,5 @@
+import sys
+import time
 
 
 clients = 'Maja, Kate, Emma, '
@@ -10,20 +12,33 @@ def _print_welcome():
     print(f'\n{"*" * 50}')
     print(f'\n\t\tWELCOME TO VCAU SHOP')
     print(f'\n{"*" * 50}')
-    print('\n\tWhat would you like to do today?')
+    print('\n\tWhat would you like to do this time?')
     print('\n\t\t[C]reate client')
     print('\n\t\t[R]ead clients list')
     print('\n\t\t[U]pdate client')
     print('\n\t\t[D]elete client')
     print('\n\t\t[S]earch client')
-    print('\n\tSelect an option from above C/R/U/D/S:\n')
+    print('\n\t\t[E]xit')
+    print('\n\tSelect an option from above C/R/U/D/S/E:\n')
+    print('\tYou can type <Exit> at any time to close the program.\n')
 
 
 def _get_client_name():
     '''
     Obtains the name of a client and returns it capitalized.
     '''
-    return input('\tWhat is the client name? ').title()
+    client_name = None
+    client_name = input('\n\tWhat is the client\'s name? ').title().strip()
+    
+    while not client_name:
+        print('\n\tYou have not entered the client\'s name. Please enter the name or type <Exit> to close the program')
+        client_name = input('\n\tWhat is the client\'s name? ').title().strip()
+    
+    if client_name == 'Exit':
+            print('\n\tGood Bye!')
+            sys.exit()
+    
+    return client_name
 
 
 def search_client(client_name):
@@ -34,7 +49,7 @@ def search_client(client_name):
     '''
     global clients
     
-    if client_name in clients:
+    if client_name + ', ' in clients:
         return True
     else:
         return False
@@ -44,7 +59,7 @@ def _client_not_found(client_name):
     '''
     Returns a message when a client is not found in the clients list.
     '''
-    print(f'\tClient {client_name} is not in clients list\n')
+    print(f'\n\tClient {client_name} is not in clients list\n')
 
 
 def _add_comma():
@@ -64,7 +79,7 @@ def create_client(client_name):
     global clients
     
     if search_client(client_name):
-        print('\tClient is already in clients list\n')
+        print('\n\tClient is already in clients list\n')
     else:
         clients += client_name
         _add_comma()
@@ -76,7 +91,7 @@ def list_clients():
     '''
     global clients
     
-    print('\tCurrent clients list:')
+    print('\n\tCurrent clients list:')
     print(f'\t>>> {clients}\n')
 
  
@@ -87,7 +102,16 @@ def update_client(client_name):
     global clients
     
     if search_client(client_name):
-        updated_client_name = input('\tWhat is the updated client name? ').title()
+        updated_client_name = input('\n\tWhat is the updated client\'s name? ').title().strip()
+        
+        while not updated_client_name:
+            print('\n\tYou have not entered the updated client\'s name. Please enter the name or type <Exit> to close the program.')
+            updated_client_name = input('\n\tWhat is the updated client\'s name? ').title().strip()
+        
+        if updated_client_name == 'Exit':
+            print('\n\tGood Bye!')
+            sys.exit()
+        
         clients = clients.replace(client_name + ', ', updated_client_name + ', ')
     else:
         _client_not_found(client_name)
@@ -109,11 +133,9 @@ def run():
     _print_welcome()
 
     command = input().upper()
-    print('')
 
     if command == 'C':
         client_name = _get_client_name()
-        print('')
         create_client(client_name)
         list_clients()
     elif command == 'R':
@@ -121,22 +143,24 @@ def run():
     elif command == 'U':
         client_name = _get_client_name()
         update_client(client_name)
-        print('')
         list_clients()
     elif command == 'D':
         client_name = _get_client_name()
-        print('')
         delete_client(client_name)
         list_clients()
     elif command == 'S':
         client_name = _get_client_name()
-        print('')
         if search_client(client_name):
-            print(f'\tThe client {client_name} is in the clients list\n')
+            print(f'\n\tThe client {client_name} is in the clients list\n')
         else:
             _client_not_found(client_name)
+    elif command == 'E' or command == 'EXIT':
+        print('\n\tGood Bye!\n')
+        sys.exit()
     else:
-        print('\tInvalid command. Try again.\n')
+        print('\n\tInvalid command. Try again.\n')
+        time.sleep(1.2)
+        run()
 
 
 if __name__ == '__main__':
