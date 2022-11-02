@@ -6,9 +6,9 @@ clients = 'Maja, Kate, Emma, '
 
 
 def _print_welcome():
-    '''
+    """
     Prints a welcome message.
-    '''
+    """
     print(f'\n{"*" * 50}')
     print(f'\n\t\tWELCOME TO VCAU SHOP')
     print(f'\n{"*" * 50}')
@@ -24,10 +24,10 @@ def _print_welcome():
 
 
 def _get_client_name():
-    '''
+    """
     Obtains the name of a client and returns it capitalized.
-    '''
-    client_name = None
+    """
+    # client_name = None
     client_name = input('\n\tWhat is the client\'s name? ').title().strip()
     
     while not client_name:
@@ -35,18 +35,19 @@ def _get_client_name():
         client_name = input('\n\tWhat is the client\'s name? ').title().strip()
     
     if client_name == 'Exit':
-            print('\n\tGood Bye!')
-            sys.exit()
+        print('\n\tGood Bye!')
+        time.sleep(1)
+        sys.exit()
     
     return client_name
 
 
 def search_client(client_name):
-    '''
+    """
     Receives the name of a client as an argument and verifies if it is in the clients list or not.
     
     Returns True or False depending on the case.
-    '''
+    """
     global clients
     
     if client_name + ', ' in clients:
@@ -56,25 +57,25 @@ def search_client(client_name):
 
 
 def _client_not_found(client_name):
-    '''
+    """
     Returns a message when a client is not found in the clients list.
-    '''
+    """
     print(f'\n\tClient {client_name} is not in clients list\n')
 
 
 def _add_comma():
-    '''
+    """
     Adds a comma and a space to separate the substrings
-    '''
+    """
     global clients
     
     clients += ', '
 
 
 def create_client(client_name):
-    '''
+    """
     Adds a client to the clients list.
-    '''
+    """
     # Specifying that the global variable -clients- is going to be used in this function 
     global clients
     
@@ -86,9 +87,9 @@ def create_client(client_name):
 
 
 def list_clients():
-    '''
+    """
     Prints the clients list
-    '''
+    """
     global clients
     
     print('\n\tCurrent clients list:')
@@ -96,9 +97,9 @@ def list_clients():
 
  
 def update_client(client_name):
-    '''
+    """
     Updates the information of a client.
-    '''
+    """
     global clients
     
     if search_client(client_name):
@@ -118,9 +119,9 @@ def update_client(client_name):
         
         
 def delete_client(client_name):
-    '''
+    """
     Deletes a client from the clients list.
-    '''
+    """
     global clients
     
     if search_client(client_name):
@@ -156,6 +157,7 @@ def run():
             _client_not_found(client_name)
     elif command == 'E' or command == 'EXIT':
         print('\n\tGood Bye!\n')
+        time.sleep(1)
         sys.exit()
     else:
         print('\n\tInvalid command. Try again.\n')
@@ -165,4 +167,3 @@ def run():
 
 if __name__ == '__main__':
     run()
-        
