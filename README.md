@@ -115,7 +115,7 @@ No existen las variables privadas y la reasignación es muy común en python, po
 
 - CONSTANTES: Una variable cuyo nombre esté en mayúscula no debería de modificarse.
 
-- _privada: Single Leading Underscore:: una variable que empieza con guion bajo ( “_” ) se deberá tratar como privada y no se deberá acceder fuera de la clase.
+- `_privada` - Single Leading Underscore: se deberá tratar como privada y no se deberá acceder fuera de la clase.
 
 - __importante: variables que empiezan con doble guion bajo ( “__”) son variables importantes, muy susceptibles ante modificaciones. 
 
@@ -241,15 +241,21 @@ Las listas en Python son un tipo de dato que permite almacenar datos de cualquie
 
 Las listas en Python son uno de los tipos o estructuras de datos más versátiles del lenguaje, ya que permiten almacenar un conjunto arbitrario de datos. Es decir, podemos guardar en ellas prácticamente lo que sea.
 
-`lista = [1, 2, 3, 4]`
+```py
+lista = [1, 2, 3, 4]
+```
 
 También se puede crear usando list y pasando un objeto iterable.
 
-`lista = list("1234")`
+```py
+lista = list("1234")
+```
 
 Una lista sea crea con [] separando sus elementos con comas (,). Una gran ventaja es que pueden almacenar tipos de datos distintos.
 
+```py
 lista = [1, "Hola", 3.67, [1, 2, 3]]
+```
 
 ### Algunas propiedades de las listas:
 
@@ -267,72 +273,96 @@ lista = [1, "Hola", 3.67, [1, 2, 3]]
 
 - Si tenemos una lista a con 3 elementos almacenados en ella, podemos acceder a los mismos usando corchetes y un índice, que va desde 0 a n-1 siendo n el tamaño de la lista.
 
-`a = [90, "Python", 3.11]
- print(a[0]) #90
- print(a[1]) #Python
- print(a[2]) #3.11`
+```py
+a = [90, "Python", 3.11]
+print(a[0]) #90
+print(a[1]) #Python
+print(a[2]) #3.11
+```
 
 
 ### Operaciones con listas
 
 - Suma (+) Concatena dos o más listas:
 
-`a=[1,2]
+```py
+a=[1,2]
 b=[3,4]
-a + b --> [1,2,3,4]`
+print(a + b) # [1,2,3,4]
+```
 
 - Multiplicación (*) Repite la misma lista:
 
-`a=[1,2]
-a * 2 —> [1,2,1,2]`
+```py
+a=[1,2]
+a * 2 —> [1,2,1,2]
+```
 
 - Añadir elemento al final de la lista:
 
-`a=[1]
-a.append(2)=[1,2]`
+```py
+a=[1]
+a.append(2)=[1,2]
+```
 
 - Eliminar elemento al final de la lista:
 
-`a=[1,2]
+```py
+a=[1,2]
 b=a.pop()
-a=[1]`
+a=[1]
+```
 
 - Eliminar elemento dado un indice:
 
-`a=[1,2]
+```py
+a=[1,2]
 b=a.pop(1)
-a=[2]`
+a=[2]
+```
 
 - Ordenar lista de menor a mayor, esto modifica la lista inicial:
 
-`a=[3,8,1]
-a.sort() —> [1,3,8]`
+```py
+a=[3,8,1]
+a.sort() —> [1,3,8]
+```
 
 - Ordenar lista de menor a mayor, esto NO modifica la lista inicial:
 
-`a=[3,8,1]
-a.sorted() —> [1,3,8]`
+```py
+a=[3,8,1]
+a.sorted() —> [1,3,8]
+```
 
 - Eliminar elementos de la lista según su índice:
 
-`a=[1,2,3]
-del a[0] —> a[2,3]`
+```py
+a=[1,2,3]
+del a[0] —> a[2,3]
+```
 
 - Eliminar elementos de lista - Elimina el elemento de la lista dado su valor:
 
-`a=[0, 2, 4, 6, 8]
+```py
+a=[0, 2, 4, 6, 8]
 a.remove(6)
-a=[0, 2, 4, 8]`
+a=[0, 2, 4, 8]
+```
 
 - Range creación de listas en un rango determinado:
 
-`a=(list(range(0,10,2))) -->crea un conteo desde 0 hasta 10 en pasos de 2 en 2.
-a=[0,2,4,6,8]`
+```py
+a=(list(range(0,10,2))) -->crea un conteo desde 0 hasta 10 en pasos de 2 en 2.
+a=[0,2,4,6,8]
+```
 
 - Tamaño de lista (len()) Devuelve el valor del tamaño de la lista:
 
-`a=[0,2,4,6,8]
-len(a)=5`
+```py
+a=[0,2,4,6,8]
+len(a)=5
+```
 
 
 ### Maneras de copiar una lista
@@ -342,83 +372,113 @@ En ocasiones puede que se necesite usar una lista y sus valores a lo largo de un
 
 - Usando el método list.copy():
 
-`new_list = old_list.copy()`
+```py
+new_list = old_list.copy()
+```
 
 - Usando slices:
 
-`new_list = old_list[:] or new_list = old_list[:]`
+```
+new_list = old_list[:] o new_list = old_list[:]
+```
 
 - You can use the built in list() function:
 
-`new_list = list(old_list)`
+```py
+new_list = list(old_list)
+```
 
 - You can use generic copy.copy():
 
-`import copy`
-`new_list = copy.copy(old_list)`
+```py
+import copy
+new_list = copy.copy(old_list)
+```
 
 - If the list contains objects and you want to copy them as well, use generic copy.deepcopy():
 
-`import copy`
-`new_list = copy.deepcopy(old_list)`
+```py
+import copy
+new_list = copy.deepcopy(old_list)
+```
 
 
 ### Algunos métodos de listas
 
 **append(<obj>):** El método append() añade un elemento al final de la lista.
 
-`l = [1, 2]
+```py
+l = [1, 2]
 l.append(3)
-print(l) #[1, 2, 3]`
+print(l) #[1, 2, 3]
+```
 
 **extend(<iterable>):** El método extend() permite añadir una lista a la lista inicial.
 
-`l = [1, 2]
+```py
+l = [1, 2]
 l.extend([3, 4])
-print(l) #[1, 2, 3, 4]`
+print(l) #[1, 2, 3, 4]
+```
 
 **insert(<index>, <obj>):** El método insert() añade un elemento en una posición o índice determinado.
 
-`l = [1, 3]
+```py
+l = [1, 3]
 l.insert(1, 2)
-print(l) #[1, 2, 3]`
+print(l) #[1, 2, 3]
+```
 
 **remove(<obj>):** El método remove() recibe como argumento un objeto y lo borra de la lista.
 
-`l = [1, 2, 3]
+```py
+l = [1, 2, 3]
 l.remove(3)
-print(l) #[1, 2]`
+print(l) #[1, 2]
+```
 
 **pop(index=-1):** El método pop() elimina por defecto el último elemento de la lista, pero si se pasa como parámetro un índice permite borrar elementos diferentes al último.
 
-`l = [1, 2, 3]
+```py
+l = [1, 2, 3]
 l.pop()
-print(l) #[1, 2]`
+print(l) #[1, 2]
+```
 
 **reverse():** El método reverse() inverte el órden de la lista.
 
-`l = [1, 2, 3]
+```py
+l = [1, 2, 3]
 l.reverse()
-print(l) #[3, 2, 1]`
+print(l) #[3, 2, 1]
+```
 
 **sort():** El método sort() ordena los elementos de menos a mayor por defecto.
 
-`l = [3, 1, 2]
+```py
+l = [3, 1, 2]
 l.sort()
-print(l) #[1, 2, 3]`
+print(l) #[1, 2, 3]
+```
 
 Y también permite ordenar de mayor a menor si se pasa como parámetro reverse=True.
 
-`l = [3, 1, 2]
+```py
+l = [3, 1, 2]
 l.sort(reverse=True)
-print(l) # [3, 2, 1]`
+print(l) # [3, 2, 1]
+```
 
 **index(<obj>[,index]):** El método index() recibe como parámetro un objeto y devuelve el índice de su primera aparición. Como hemos visto en otras ocasiones, el índice del primer elemento es el 0.
 
-`l = ["Periphery", "Intervals", "Monuments"]
-print(l.index("Intervals"))`
+```py
+l = ["Periphery", "Intervals", "Monuments"]
+print(l.index("Intervals"))
+```
 
 También permite introducir un parámetro opcional que representa el índice con el cual debe comenzar la búsqueda del objeto. Es como si ignorara todo lo que hay antes de ese índice para la búsqueda, en este caso el 4.
 
-`l = [1, 1, 1, 1, 2, 1, 4, 5]
-print(l.index(1, 4)) # 5`
+```py
+l = [1, 1, 1, 1, 2, 1, 4, 5]
+print(l.index(1, 4)) # 5
+```
