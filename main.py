@@ -2,7 +2,26 @@ import sys
 import time
 
 
-clients = 'Maja, Kate, Emma, '
+clients = [
+    {
+        'name': 'Maja',
+        'company': 'Google',
+        'email': 'maja@google.com',
+        'position': 'Software engineer',
+    },
+    {
+        'name': 'Kate',
+        'company': 'Facebook',
+        'email': 'kate@meta.com',
+        'position': 'Data engineer',
+    },
+    {
+        'name': 'Emma',
+        'company': 'Disney',
+        'email': 'emma@disney.com',
+        'position': 'Content producer',
+    }
+]
 
 
 def _print_welcome():
@@ -23,23 +42,33 @@ def _print_welcome():
     print('\tYou can type <Exit> at any time to close the program.\n')
 
 
-def _get_client_name():
-    """
-    Obtains the name of a client and returns it capitalized.
-    """
+def _get_client_field(field_name):
+    field = input(f'\n\tWhat is the client\'s {field_name}? ').title().strip()
+
+    while not field:
+        print(f'\n\tYou have not entered the {field_name}. Try again or type <Exit> to close the program')
+        field = input(f'\n\tWhat is the client\'s {field_name}? ').title().strip()
+
+    return field
+
+
+# def _get_client_name():
+    # """
+    # Obtains the name of a client and returns it capitalized.
+    # """
     # client_name = None
-    client_name = input('\n\tWhat is the client\'s name? ').title().strip()
+    # client_name = input('\n\tWhat is the client\'s name? ').title().strip()
     
-    while not client_name:
-        print('\n\tYou have not entered the client\'s name. Please enter the name or type <Exit> to close the program')
-        client_name = input('\n\tWhat is the client\'s name? ').title().strip()
+    # while not client_name:
+        # print('\n\tYou have not entered the client\'s name. Please enter a name or type <Exit> to close the program')
+        # client_name = input('\n\tWhat is the client\'s name? ').title().strip()
     
-    if client_name == 'Exit':
-        print('\n\tGood Bye!')
-        time.sleep(1)
-        sys.exit()
+    # if client_name == 'Exit':
+        # print('\n\tGood Bye!')
+        # time.sleep(1)
+        # sys.exit()
     
-    return client_name
+    # return client_name
 
 
 def search_client(client_name):
@@ -48,111 +77,108 @@ def search_client(client_name):
     
     Returns True or False depending on the case.
     """
-    global clients
-    
-    if client_name + ', ' in clients:
-        return True
-    else:
-        return False
+    for client in clients:
+        if client['name'] == client_name:
+            return True
+        else:
+            continue
 
 
 def _client_not_found(client_name):
     """
     Returns a message when a client is not found in the clients list.
     """
-    print(f'\n\tClient {client_name} is not in clients list\n')
+    print(f"\n\tClient {client_name} is not in clients list\n")
 
 
-def _add_comma():
-    """
-    Adds a comma and a space to separate the substrings
-    """
-    global clients
-    
-    clients += ', '
-
-
-def create_client(client_name):
+def create_client(client):
     """
     Adds a client to the clients list.
     """
     # Specifying that the global variable -clients- is going to be used in this function 
     global clients
     
-    if search_client(client_name):
+    if search_client(client['name']):
         print('\n\tClient is already in clients list\n')
     else:
-        clients += client_name
-        _add_comma()
+        clients.append(client)
 
 
 def list_clients():
     """
     Prints the clients list
     """
-    global clients
-    
-    print('\n\tCurrent clients list:')
-    print(f'\t>>> {clients}\n')
+    print('\n\tCurrent clients list:\n')
 
- 
-def update_client(client_name):
+    for idx, client in enumerate(clients):
+        print(f"\t{idx}: {client['name']}")
+
+
+def update_client(client):
     """
     Updates the information of a client.
     """
     global clients
     
-    if search_client(client_name):
+    if search_client(client['name']):
         updated_client_name = input('\n\tWhat is the updated client\'s name? ').title().strip()
         
         while not updated_client_name:
-            print('\n\tYou have not entered the updated client\'s name. Please enter the name or type <Exit> to close the program.')
+            print('\n\tYou have not entered the updated client\'s name.')
+            print('\tPlease enter a name or type <Exit> to close the program.')
             updated_client_name = input('\n\tWhat is the updated client\'s name? ').title().strip()
         
         if updated_client_name == 'Exit':
             print('\n\tGood Bye!')
             sys.exit()
         
-        clients = clients.replace(client_name + ', ', updated_client_name + ', ')
+        index = clients.index(client)
+        clients[index] = updated_client_name
     else:
-        _client_not_found(client_name)
+        _client_not_found(client['name'])
         
         
-def delete_client(client_name):
+def delete_client(client):
     """
     Deletes a client from the clients list.
     """
     global clients
     
-    if search_client(client_name):
-        clients = clients.replace(client_name + ', ', '')
+    if search_client(client['name']):
+        clients.remove(client)
     else:
-        _client_not_found(client_name)
+        _client_not_found(client['name'])
  
     
 def run():
     _print_welcome()
 
-    command = input().upper()
+    command = input().upper().strip()
 
     if command == 'C':
-        client_name = _get_client_name()
-        create_client(client_name)
+        client = {
+            'name': _get_client_field('name'),
+            'company': _get_client_field('company'),
+            'email': _get_client_field('email'),
+            'position': _get_client_field('position'),
+        }
+        create_client(client)
         list_clients()
     elif command == 'R':
         list_clients()
     elif command == 'U':
-        client_name = _get_client_name()
+        client_name = _get_client_field('name')
         update_client(client_name)
         list_clients()
     elif command == 'D':
-        client_name = _get_client_name()
+        client_name = _get_client_field('name')
         delete_client(client_name)
         list_clients()
     elif command == 'S':
-        client_name = _get_client_name()
+        client_name = _get_client_field('name')
+
         if search_client(client_name):
-            print(f'\n\tThe client {client_name} is in the clients list\n')
+            print(f"\n\tThe client {client_name} is in the clients list\n")
         else:
             _client_not_found(client_name)
     elif command == 'E' or command == 'EXIT':
