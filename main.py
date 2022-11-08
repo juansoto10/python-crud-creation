@@ -43,32 +43,21 @@ def _print_welcome():
 
 
 def _get_client_field(field_name):
-    field = input(f'\n\tWhat is the client\'s {field_name}? ').title().strip()
+    """
+    Obtains any field of the client's data and returns it capitalized.
+    """
+    field = input(f'\n\tWhat is the client\'s {field_name}? => ').title().strip()
 
     while not field:
-        print(f'\n\tYou have not entered the {field_name}. Try again or type <Exit> to close the program')
-        field = input(f'\n\tWhat is the client\'s {field_name}? ').title().strip()
+        print(f'\n\tYou have not entered the {field_name}. Try again or type <Exit> to close the program.')
+        field = input(f'\n\tWhat is the client\'s {field_name}? => ').title().strip()
+
+    if field == 'Exit':
+        print('\n\tGood Bye!')
+        time.sleep(1)
+        sys.exit()
 
     return field
-
-
-# def _get_client_name():
-    # """
-    # Obtains the name of a client and returns it capitalized.
-    # """
-    # client_name = None
-    # client_name = input('\n\tWhat is the client\'s name? ').title().strip()
-    
-    # while not client_name:
-        # print('\n\tYou have not entered the client\'s name. Please enter a name or type <Exit> to close the program')
-        # client_name = input('\n\tWhat is the client\'s name? ').title().strip()
-    
-    # if client_name == 'Exit':
-        # print('\n\tGood Bye!')
-        # time.sleep(1)
-        # sys.exit()
-    
-    # return client_name
 
 
 def search_client(client_name):
@@ -88,7 +77,7 @@ def _client_not_found(client_name):
     """
     Returns a message when a client is not found in the clients list.
     """
-    print(f"\n\tClient {client_name} is not in clients list\n")
+    print(f"\n\tClient {client_name} is not in clients list.\n")
 
 
 def create_client(client):
@@ -98,10 +87,10 @@ def create_client(client):
     # Specifying that the global variable -clients- is going to be used in this function 
     global clients
     
-    if search_client(client['name']):
-        print('\n\tClient is already in clients list\n')
-    else:
+    if client not in clients:
         clients.append(client)
+    else:
+        print('\n\tClient is already in clients list.')
 
 
 def list_clients():
@@ -111,76 +100,133 @@ def list_clients():
     print('\n\tCurrent clients list:\n')
 
     for idx, client in enumerate(clients):
-        print(f"\t{idx}: {client['name']}")
+        print(f"\t{idx}: {client}")
 
 
-def update_client(client):
+def search_index(name):
+    for client in clients:
+        if client['name'] == name:
+            index = clients.index(client)
+            return index
+
+
+def update_client(client_name):
     """
     Updates the information of a client.
     """
     global clients
-    
-    if search_client(client['name']):
-        updated_client_name = input('\n\tWhat is the updated client\'s name? ').title().strip()
-        
-        while not updated_client_name:
-            print('\n\tYou have not entered the updated client\'s name.')
-            print('\tPlease enter a name or type <Exit> to close the program.')
-            updated_client_name = input('\n\tWhat is the updated client\'s name? ').title().strip()
-        
-        if updated_client_name == 'Exit':
+
+    index = search_index(client_name)
+
+    print('\n\tWhat is the client\'s data you want to modify?')
+    data_to_update = input('\n\t[N]ame | [C]ompany | [E]mail | [P]osition | [A]ll | [Exit] => ').title().strip()
+
+    match data_to_update:
+        case 'N':
+            updated_name = _get_client_field('name')
+            clients[index]['name'] = updated_name
+        case 'C':
+            updated_company = _get_client_field('company')
+            clients[index]['company'] = updated_company
+        case 'E':
+            updated_email = _get_client_field('email').lower()
+            clients[index]['email'] = updated_email
+        case 'P':
+            updated_position = _get_client_field('position')
+            clients[index]['position'] = updated_position
+        case 'A':
+            client = {
+                'name': _get_client_field('name'),
+                'company': _get_client_field('company'),
+                'email': _get_client_field('email').lower(),
+                'position': _get_client_field('position'),
+            }
+
+            clients[index] = client
+            print(clients)
+        case 'Exit':
             print('\n\tGood Bye!')
+            time.sleep(1)
             sys.exit()
-        
-        index = clients.index(client)
-        clients[index] = updated_client_name
-    else:
-        _client_not_found(client['name'])
+        case _:
+            print('\n\tPlease enter a valid command.')
+            update_client(client_name)
         
         
-def delete_client(client):
+def delete_client(client_name):
     """
     Deletes a client from the clients list.
     """
     global clients
-    
-    if search_client(client['name']):
-        clients.remove(client)
-    else:
-        _client_not_found(client['name'])
+
+    index = search_index(client_name)
+    return clients.pop(index)
  
     
 def run():
     _print_welcome()
-
-    command = input().upper().strip()
+    time.sleep(0.5)
+    command = input('\t=> ').upper().strip()
 
     if command == 'C':
-        client = {
-            'name': _get_client_field('name'),
-            'company': _get_client_field('company'),
-            'email': _get_client_field('email'),
-            'position': _get_client_field('position'),
-        }
-        create_client(client)
+        client_name = _get_client_field('name')
+
+        if search_client(client_name):
+            print(f'\n\tThe client {client_name} is already in the clients list.')
+            time.sleep(1)
+            run()
+        else:
+            client = {
+                'name': client_name,
+                'company': _get_client_field('company'),
+                'email': _get_client_field('email').lower(),
+                'position': _get_client_field('position'),
+            }
+
+            create_client(client)
+            print(f'\n\t>>> Client created successfully.')
+
+        time.sleep(0.6)
         list_clients()
+        time.sleep(1)
     elif command == 'R':
         list_clients()
     elif command == 'U':
         client_name = _get_client_field('name')
-        update_client(client_name)
+
+        if search_client(client_name):
+            update_client(client_name)
+            print(f'\n\t>>> The client\'s data was updated.')
+        else:
+            _client_not_found(client_name)
+            time.sleep(1)
+            run()
+
+        time.sleep(0.6)
         list_clients()
+        time.sleep(1)
     elif command == 'D':
         client_name = _get_client_field('name')
-        delete_client(client_name)
+
+        if search_client(client_name):
+            delete_client(client_name)
+            print(f'\n\t>>> The client {client_name} was deleted.')
+        else:
+            _client_not_found(client_name)
+
+        time.sleep(0.6)
         list_clients()
+        time.sleep(1)
     elif command == 'S':
         client_name = _get_client_field('name')
 
         if search_client(client_name):
-            print(f"\n\tThe client {client_name} is in the clients list\n")
+            print(f"\n\tThe client {client_name} is in the clients list.\n")
         else:
             _client_not_found(client_name)
+
+        time.sleep(1)
+        list_clients()
     elif command == 'E' or command == 'EXIT':
         print('\n\tGood Bye!\n')
         time.sleep(1)
