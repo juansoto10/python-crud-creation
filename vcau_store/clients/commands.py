@@ -1,4 +1,5 @@
 import click
+from tabulate import tabulate
 
 from clients.services import ClientService
 from clients.models import Client
@@ -40,7 +41,31 @@ def create(ctx, name, company, email, position):
 @click.pass_context
 def list(ctx):
     """Lists all clients."""
-    pass
+    client_service = ClientService(ctx.obj['clients_table'])
+
+    clients_list = client_service.list_clients()
+
+    headers = [field.capitalize() for field in Client.schema()]
+    table = []
+
+    for client in clients_list:
+        table.append(
+            [
+                client['name'],
+                client['company'],
+                client['email'],
+                client['position'],
+                client['uid']
+            ]
+        )
+
+    click.echo(tabulate(table, headers))
+
+    # click.echo('  ID  |  NAME  |  COMPANY  |  EMAIL  |  POSITION  ')
+    # click.echo('-' * 50)
+    #
+    # for client in clients_list:
+    #     click.echo(f'{client["uid"]} | {client["name"]} | {client["company"]} | {client["email"]} | {client["position"]}')
 
 
 @clients.command()
@@ -58,4 +83,3 @@ def delete(ctx, client_uid):
 
 
 all = clients
-
